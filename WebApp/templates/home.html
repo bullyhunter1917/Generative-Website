@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main class="home-content">
+        <div>
+            <form class="prompt-form">
+                <h3>Prompt</h3>
+                <input type="text" id="text">
+                <input type="file" id="image">
+            </form>
+
+            <button class="run-btn">Run</button>
+
+            <form class="options-from">
+                <input type="checkbox" id="onlyText" onclick="takeImg()">
+            </form>
+        </div>
+        <div class="img-display">
+            HERE is picture
+        </div>
+    </main>
+
+
+    <script>
+        function takeImg() {
+            var checkBox = document.getElementById("onlyText");
+            var imgInput = document.getElementById("image");
+            if (checkBox.checked == true) {
+                imgInput.style.display = "none";
+            } else {
+                imgInput.style.display = "block";
+            }
+        }
+    </script>
+{% endblock %}

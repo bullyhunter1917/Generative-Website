@@ -1,5 +1,10 @@
+html{
+    height: 100%;
+}
+
 body {
     margin: 0px;
+    min-height: 100%;
 }
 
 main {
@@ -14,6 +19,7 @@ main {
     margin: 0px;
     overflow: hidden;
 }
+
 .navbar a{
     color: white;
     text-decoration: none;
@@ -26,6 +32,41 @@ main {
     background-color: #6A3DCD;
 }
 
-.navbar li{
+.navbar_icon li{
     float: left;
+}
+
+.navbar_login li{
+    float: right;
+}
+
+.login {
+    margin-top: 17px;
+    margin-bottom: 17px;
+    background-color: green;
+    border-radius: 10px;
+}
+
+.signup {
+    margin: 17px;
+    background-color: lightgreen;
+    border-radius: 10px;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    height: 90%;
+    width: 100%;
+}
+
+.home-content{
+    margin-top: 100px;
+    display: flex;
+}
+
+.img-display {
+    background-color: #a88ce5;
 }
