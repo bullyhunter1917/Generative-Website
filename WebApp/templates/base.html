@@ -12,8 +12,13 @@
                 <li><a href="/"><img src="static/icon.png" width="48" height="48"></a></li>
             </div>
             <div class="navbar_login">
-                <li><a href="/signup" class="signup">Sign Up</a></li>
-                <li><a href="/login" class="login">Login</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="/logout" class="logout">Logout</a></li>
+                    <li><a href="/storage" class="login">Storage</a></li>
+                {% else %}
+                    <li><a href="/sign-up" class="signup">Sign Up</a></li>
+                    <li><a href="/login" class="login">Login</a></li>
+                {% endif %}
             </div>
         </ul>
     </nav>
