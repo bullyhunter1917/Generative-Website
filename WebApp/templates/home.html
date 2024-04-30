@@ -2,11 +2,15 @@
 
 {% block content %}
     <main class="home-content">
-        <div>
+        <div class="home-input">
             <form class="prompt-form">
-                <h3>Prompt</h3>
-                <input type="text" id="text">
-                <input type="file" id="image">
+                <label for="text">Prompt</label>
+                <input class="form-control" type="text" id="text">
+                <br/>
+                <div class="image-input" id="image">
+                    <label for="image">Image</label>
+                    <input type="file">
+                </div>
             </form>
 
             <button class="run-btn">Run</button>
@@ -28,7 +32,7 @@
             if (checkBox.checked == true) {
                 imgInput.style.display = "none";
             } else {
-                imgInput.style.display = "block";
+                imgInput.style.display = "flex";
             }
         }
     </script>
