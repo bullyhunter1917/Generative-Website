@@ -2,23 +2,23 @@
 
 {% block content %}
     <main class="home-content">
-        <div class="home-input">
-            <form class="prompt-form">
+        <form method="post" class="home-input">
+            <div class="prompt-form">
                 <label for="text">Prompt</label>
-                <input class="form-control" type="text" id="text">
+                <input class="form-control" type="text" id="inputText" name="inputText">
                 <br/>
                 <div class="image-input" id="image">
                     <label for="image">Image</label>
-                    <input type="file">
+                    <input type="file" id="imageInput">
                 </div>
-            </form>
+            </div>
 
-            <button class="run-btn">Run</button>
+            <button type="submit" class="run-btn">Generuj</button>
 
-            <form class="options-from">
+            <div class="options-from">
                 <input type="checkbox" id="onlyText" onclick="takeImg()">
-            </form>
-        </div>
+            </div>
+        </form>
         <div class="img-display">
             HERE is picture
         </div>
