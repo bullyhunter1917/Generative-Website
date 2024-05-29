@@ -1,4 +1,12 @@
-from celery import Celery
+from flask import Flask
+
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+import secrets
+from os import path
+
+db = SQLAlchemy()
+DB_NAME = 'database.db'
 
 import torch
 from omegaconf import OmegaConf
@@ -35,18 +43,35 @@ def loadTokenizer():
     tokenizer.add_tokens(['<charcoal-style>', '<hyperpop-style>', '<martyna-style>'])
     return
 
-def make_celery(app):
-    celery = Celery(app.import_name)
-    celery.conf.update(app.config["CELERY_CONFIG"])
+def create_app():
+    app = Flask(__name__, template_folder='templates', static_folder='static')
+    app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 
-    config = OmegaConf.load("WebApp/configs/stable-diffusion/v1-inference.yaml")
-    model = load_model_from_config(config, "WebApp/models/sd/sd-v1-4.ckpt")
-    sampler = DDIMSampler(model)
+    db.init_app(app)
 
-    class ContextTask(celery.Task):
-        def __call__(self, *args, **kwargs):
-            with app.app_context():
-                return self.run(*args, **kwargs)
+    from .views import views
+    from .auth import auth
 
-    celery.Task = ContextTask
-    return celery
+    from .models import User
+
+    with app.app_context():
+        db.create_all()
+
+    app.register_blueprint(views, url_prefix='/')
+    app.register_blueprint(auth, url_prefix='/')
+
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.login'
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
+
+    return app
+
+def create_database(app):
+    if not path.exists('website/' + DB_NAME):
+        db.create_all(app=app)
+        print('Created Database!')
