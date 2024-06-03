@@ -1,0 +1,10 @@
+Flask==3.0.3
+Flask-Login
+transformers
+torch
+pytorch-lightning
+omegaconf
+werkzeug~=3.0.2
+Flask-SQLAlchemy
+gunicorn
+einops
