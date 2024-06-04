@@ -97,9 +97,14 @@ button, label {
 }
 
 .img-display {
+    height: 90%;
+    aspect-ratio : 1 / 1;
     background-color: #a88ce5;
     padding: 10px;
     margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .prompt-form {
@@ -108,6 +113,15 @@ button, label {
     border: 1px solid rgba(255, 255, 255, 0.53);
     border-radius: 2px;
     padding: 10px;
+}
+
+.form-control {
+    background-color: white;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    border: none;
+    border-bottom: 1px solid #ccc;
 }
 
 .image-input {
@@ -130,55 +144,64 @@ button, label {
 }
 
 .options-from {
+    display: flex;
+    flex-direction: column;
     border: 1px solid grey;
     border-radius: 2px;
     padding: 10px;
 }
 
-/* Login page */
-
-.form-acc {
-    width: 30%;
-    border-radius: 4px;
-    margin: 10px;
-    background-color: #553ba3;
-    content: '';
-    display: table;
-    clear: both;
-    padding: 0px 16px 16px 16px;
-    align-items: center;
+.first_row {
+    display: flex;
+    flex-direction: row;
+    place-items: center center;
+    justify-content: space-between;
 }
 
-.form-group {
+.L_onlyTekst {
+    padding-left: 5px;
+}
+
+.style_selector {
     display: flex;
     flex-direction: column;
-    margin: 10px;
+    padding: 10px;
+}
+
+.slidecontainer {
+    width: auto;
     padding: 5px;
 }
 
-.form-control {
-    background-color: white;
-    padding: 8px;
-    display: block;
-    border: none;
-    border-bottom: 1px solid #ccc;
+.slider {
+    width: 100%;
 }
 
-.btn-div {
+.second_row {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
 }
 
-.btn-primary {
-    margin: 5px;
+.option {
+    display: flex;
+    flex-direction: column;
     padding: 5px;
-    width: 50%;
-    background-color: #b157c5;
-    border: none;
-    color: white;
-    text-decoration: none;
 }
 
-.btn-primary:hover {
-    background-color: rgba(177, 87, 197, 0.65);
+.option input {
+    width: 100px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+#msg {
+    background-color: #d53434;
+    padding: 5px;
+    border: 2px solid black;
+    border-radius: 4px;
 }

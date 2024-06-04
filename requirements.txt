@@ -1,10 +1,13 @@
 Flask==3.0.3
-Flask-Login
+pillow
 transformers
 torch
 pytorch-lightning
 omegaconf
 werkzeug~=3.0.2
-Flask-SQLAlchemy
 gunicorn
 einops
+torchvision
+taming-transformers-rom1504
+openai-clip
+kornia
