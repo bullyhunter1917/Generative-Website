@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <p id="msg" style="display: none"></p>
+    <main class="home-content">
+        <form id="first_form" method="post" action="/_generate" class="home-input">
+            <div class="prompt-form">
+                <label for="inputText">Prompt</label>
+                <input class="form-control" type="text" id="inputText" name="inputText">
+                <br/>
+                <div class="image-input" id="image">
+                    <label for="imageInput">Image</label>
+                    <input type="file" id="file" name="files[]" accept="image/*">
+                </div>
+            </div>
+
+            <button type="submit" id="generate" class="run-btn">Generuj</button>
+
+            <div class="options-from">
+                <div class="first_row">
+
+
+                    <label for="onlyText" class="L_onlyTekst">Only text:</label>
+                    <input type="checkbox" id="onlyText" name="onlyText" onclick="takeImg()">
+                    <div class="style_selector">
+                        <label for="style1">Styl 1:</label>
+                        <select name="style1", id="style1">
+                            <option value="">Żaden</option>
+                            <option value="<charcoal-style>">Węgiel</option>
+                            <option value="<hyperpop-style>">Hyperpop</option>
+                            <option value="<abstract-style>">Abstrakcja</option>
+                            <option value="<graffiti-style>">Street art</option>
+                            <option value="<martyna-style>">Contemporary pop</option>
+                            <option value="<klee-style>">Kubizm</option>
+                        </select>
+                    </div>
+                    <div class="style_selector">
+                        <label for="style2">Styl 2:</label>
+                        <select name="style2", id="style2">
+                            <option value="">Żaden</option>
+                            <option value="<charcoal-style>">Węgiel</option>
+                            <option value="<hyperpop-style>">Hyperpop</option>
+                            <option value="<abstract-style>">Abstrakcja</option>
+                            <option value="<graffiti-style>">Street art</option>
+                            <option value="<martyna-style>">Contemporary pop</option>
+                            <option value="<klee-style>">Kubizm</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="slidecontainer">
+                    <label for="alpha">Style mixer:</label>
+                    <input type="range" min="0" max="1000" value="500" class="slider" id="alpha" name="alpha">
+                </div>
+                <div class="second_row">
+                    <div class="option">
+                        <label for="strength">Strength:</label>
+                        <input type="number" min="0.00" max="1.00" step="0.01" value="0.7" name="strength">
+                    </div>
+                    <div class="option">
+                        <label for="ddim_steps">DDIM steps:</label>
+                        <input type="number" max="100" value="50" step="1" name="ddim_steps">
+                    </div>
+                    <div class="option">
+                        <label for="n_samples">Samples:</label>
+                        <input type="number" max="2" value="1" step="1" name="n_samples">
+                    </div>
+                    <div class="option">
+                        <label for="n_iter">Rows:</label>
+                        <input type="number" max="2" value="1" step="1" name="n_iter">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="img-display">
+            <span id="result">?</span>
+        </div>
+    </main>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+    <script src="https://malsup.github.io/jquery.form.js"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            $('#first_form').ajaxForm(function(data) {
+                if (data.msg == undefined) {
+                    $('#msg').css("display", "none");
+                    $('#msg').text("");
+                } else {
+                    $('#msg').css("display", "flex");
+                    $('#msg').text(data.msg);
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+        function takeImg() {
+            var checkBox = document.getElementById("onlyText");
+            var imgInput = document.getElementById("image");
+            if (checkBox.checked == true) {
+                imgInput.style.display = "none";
+            } else {
+                imgInput.style.display = "flex";
+            }
+        }
+    </script>
+{% endblock %}
