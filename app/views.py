@@ -28,22 +28,37 @@ def generate():
     text = request.form.get('inputText')
     # on - tylko tekst, None - obraz i tekst
     only_text = request.form.get('onlyText')
+    style1 = request.form.get('style1')
+    style2 = request.form.get('style2')
+    alpha = float(request.form.get('alpha'))/1000.0
+    strength = float(request.form.get('strength'))
+    ddim_steps = int(request.form.get('ddim_steps'))
+    n_samples = int(request.form.get('n_samples'))
+    n_iter = int(request.form.get('n_iter'))
+
 
     if only_text:
         generate_picture(text, None, only_text)
     else:
         if 'files[]' not in request.files:
             print('return msg')
-            return jsonify(result='', msg='Proszę załączyć grafikę')
+            return jsonify(result='', msg='Attach a file')
 
         file = request.files['files[]']
         if file and allowed_file(file.filename):
+            if text == "" and (style1=='' or style2==''):
+                return jsonify(result='', msg='If one of styles is None please add Prompt')
+
             filename = secure_filename(file.filename)
+
+            print(filename)
+
             file.save(UPLOAD_FOLDER + '/' + filename)
 
-            generate_picture(text, filename, only_text)
+            # generate_picture(text, filename, only_text)
+            return jsonify(result='', msg='Generated picture')
         else:
-            return jsonify(result='', msg='Niepoprawny plik, prosze podać png, jpg lub jpeg')
+            return jsonify(result='', msg='Accepted files: png, jpg, jpeg')
 
 
     return "done"
