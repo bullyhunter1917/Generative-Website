@@ -26,24 +26,24 @@
                         <label for="style1">Styl 1:</label>
                         <select name="style1", id="style1">
                             <option value="">Żaden</option>
-                            <option value="<charcoal-style>">Węgiel</option>
-                            <option value="<hyperpop-style>">Hyperpop</option>
-                            <option value="<abstract-style>">Abstrakcja</option>
-                            <option value="<graffiti-style>">Street art</option>
-                            <option value="<martyna-style>">Contemporary pop</option>
-                            <option value="<klee-style>">Kubizm</option>
+                            <option value=" <charcoal-style>">Węgiel</option>
+                            <option value=" <hyperpop-style>">Hyperpop</option>
+                            <option value=" <abstract-style>">Abstrakcja</option>
+                            <option value=" <graffiti-style>">Street art</option>
+                            <option value=" <martyna-style>">Contemporary pop</option>
+                            <option value=" <klee-style>">Kubizm</option>
                         </select>
                     </div>
                     <div class="style_selector">
                         <label for="style2">Styl 2:</label>
                         <select name="style2", id="style2">
                             <option value="">Żaden</option>
-                            <option value="<charcoal-style>">Węgiel</option>
-                            <option value="<hyperpop-style>">Hyperpop</option>
-                            <option value="<abstract-style>">Abstrakcja</option>
-                            <option value="<graffiti-style>">Street art</option>
-                            <option value="<martyna-style>">Contemporary pop</option>
-                            <option value="<klee-style>">Kubizm</option>
+                            <option value=" <charcoal-style>">Węgiel</option>
+                            <option value=" <hyperpop-style>">Hyperpop</option>
+                            <option value=" <abstract-style>">Abstrakcja</option>
+                            <option value=" <graffiti-style>">Street art</option>
+                            <option value=" <martyna-style>">Contemporary pop</option>
+                            <option value=" <klee-style>">Kubizm</option>
                         </select>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
             </div>
         </form>
         <div class="img-display">
-            <span id="result">?</span>
+                <img src="" id="result">
         </div>
     </main>
 
@@ -88,6 +88,16 @@
                 } else {
                     $('#msg').css("display", "flex");
                     $('#msg').text(data.msg);
+                }
+                if (data.type == "error") {
+                    $('#msg').css("color", "#d53434ad");
+                } else if (data.type == "success") {
+                    $('#msg').css("color", "74d534ad");
+                }
+                if (data.result == undefined) {
+                    $('#result').attr('src', "");
+                } else {
+                    $('#result').attr('src', "static/generated/"+data.result);
                 }
             });
         });

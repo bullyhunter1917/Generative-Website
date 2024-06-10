@@ -200,7 +200,7 @@ input::-webkit-inner-spin-button {
 
 
 #msg {
-    background-color: #d53434ad;
+    background-color: rgba(110, 199, 39, 0.68);
     padding: 5px;
     border: 2px solid black;
     border-radius: 4px;
