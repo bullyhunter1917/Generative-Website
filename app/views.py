@@ -3,7 +3,7 @@ from werkzeug.utils import secure_filename
 from flask import Blueprint, render_template, request, jsonify, flash
 from .task import generate_picture
 
-UPLOAD_FOLDER = 'my_proj_env/bin/app/static/uploads'
+UPLOAD_FOLDER = 'app/static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 
@@ -16,7 +16,6 @@ views = Blueprint('views', __name__)
 
 @views.route('/', methods=['GET', 'POST'])
 def home():
-    print("HELLO")
 
     return render_template('home.html')
 
@@ -32,39 +31,54 @@ def generate():
     style1 = request.form.get('style1')
     style2 = request.form.get('style2')
     alpha = float(request.form.get('alpha')) / 1000.0
-    strength = float(request.form.get('strength'))
+    if only_text:
+        strength = 0.7
+    else:
+        strength = float(request.form.get('strength'))
+
     ddim_steps = int(request.form.get('ddim_steps'))
     n_samples = int(request.form.get('n_samples'))
     n_iter = int(request.form.get('n_iter'))
 
     if only_text:
         if text == "":
-            return jsonify(result='', msg='Please provide input in only text mode', t='error')
+            return jsonify(msg='Please provide input in only text mode', t='error')
 
         res = generate_picture(text, None, only_text, style1, style2, alpha, strength, ddim_steps, n_samples, n_iter)
 
-        return jsonify(result=res, msg='Generated picture', t='success')
+        if n_samples == n_iter:
+            return jsonify(result=res, msg='Generated picture', t='success')
+        elif n_samples > n_iter:
+            return jsonify(result=res, msg='Generated picture', t='success', col='')
+        elif n_iter > n_samples:
+            return jsonify(result=res, msg='Generated picture', t='success', row='')
 
     else:
         if 'files[]' not in request.files:
-            print('return msg')
-            return jsonify(result='', msg='Attach a file', t='error')
+            return jsonify(msg='Attach a file', t='error')
 
         file = request.files['files[]']
         if file and allowed_file(file.filename):
             if text == "" and (style1 == '' or style2 == ''):
-                return jsonify(result='', msg='If one of styles is None please add Prompt', t='error')
+                return jsonify(msg='If one of styles is None please add Prompt', t='error')
 
             filename = secure_filename(file.filename)
-
-            print(filename)
 
             file.save(UPLOAD_FOLDER + '/' + filename)
 
             res = generate_picture(text, filename, only_text, style1, style2, alpha, strength, ddim_steps, n_samples,
                                    n_iter)
-            return jsonify(result=res, msg='Generated picture', t='success')
+
+            if n_samples == n_iter:
+                return jsonify(result=res, msg='Generated picture', t='success')
+
+            elif n_samples > n_iter:
+                return jsonify(result=res, msg='Generated picture', t='success', col='')
+
+            elif n_iter > n_samples:
+                return jsonify(result=res, msg='Generated picture', t='success', row='')
+
         else:
-            return jsonify(result='', msg='Accepted files: png, jpg, jpeg', t='error')
+            return jsonify(msg='Accepted files: png, jpg, jpeg', t='error')
 
     return "done"

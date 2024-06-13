@@ -6,7 +6,7 @@
         <form id="first_form" method="post" action="/_generate" class="home-input">
             <div class="prompt-form">
                 <label for="inputText">Prompt</label>
-                <input class="form-control" type="text" id="inputText" name="inputText">
+                <input class="form-control" type="text" id="inputText" name="inputText" placeholder='Describe picture you want to generate'>
                 <br/>
                 <div class="image-input" id="image">
                     <label for="imageInput">Image</label>
@@ -14,7 +14,12 @@
                 </div>
             </div>
 
-            <button type="submit" id="generate" class="run-btn">Generuj</button>
+            <button type="submit" id="generate" class="run-btn">Generate</button>
+            <div class='wrapper'>
+                <div class='progress-bar'>
+                    <div class='progress' style='width: 0;'></div>
+                </div>
+            </div>
 
             <div class="options-from">
                 <div class="first_row">
@@ -23,7 +28,7 @@
                     <label for="onlyText" class="L_onlyTekst">Only text:</label>
                     <input type="checkbox" id="onlyText" name="onlyText" onclick="takeImg()">
                     <div class="style_selector">
-                        <label for="style1">Styl 1:</label>
+                        <label for="style1">Style 1:</label>
                         <select name="style1", id="style1">
                             <option value="">Żaden</option>
                             <option value=" <charcoal-style>">Węgiel</option>
@@ -35,7 +40,7 @@
                         </select>
                     </div>
                     <div class="style_selector">
-                        <label for="style2">Styl 2:</label>
+                        <label for="style2">Style 2:</label>
                         <select name="style2", id="style2">
                             <option value="">Żaden</option>
                             <option value=" <charcoal-style>">Węgiel</option>
@@ -54,7 +59,7 @@
                 <div class="second_row">
                     <div class="option">
                         <label for="strength">Strength:</label>
-                        <input type="number" min="0.00" max="1.00" step="0.01" value="0.7" name="strength">
+                        <input type="number" min="0.00" max="1.00" step="0.01" value="0.7" name="strength" id='strength'>
                     </div>
                     <div class="option">
                         <label for="ddim_steps">DDIM steps:</label>
@@ -82,6 +87,8 @@
     <script type="text/javascript">
         $(function() {
             $('#first_form').ajaxForm(function(data) {
+                $('.wrapper').css('display', 'none');
+                $('#generate').css('display', 'block');
                 if (data.msg == undefined) {
                     $('#msg').css("display", "none");
                     $('#msg').text("");
@@ -89,20 +96,43 @@
                     $('#msg').css("display", "flex");
                     $('#msg').text(data.msg);
                 }
-                if (data.type == "error") {
-                    $('#msg').css("color", "#d53434ad");
-                } else if (data.type == "success") {
-                    $('#msg').css("color", "74d534ad");
-                }
-                if (data.result == undefined) {
-                    $('#result').attr('src', "");
+
+                if (data.t == "error") {
+                    console.log('red');
+                    $('#msg').css("background-color", "#d53434ad");
                 } else {
+                    console.log("Green");
+                    $('#msg').css("background-color", "#74d534ad");
+                }
+
+                if (data.result == undefined) {
+                    $('#result').css('display', "none");
+                    $('#result').attr('src', '');
+                } else {
+                    $('#result').css('display', 'flex');
                     $('#result').attr('src', "static/generated/"+data.result);
+                }
+
+                if (data.col == undefined && data.row == undefined) {
+                    $('#result').attr('width', '512');
+                    $('#result').attr('height', '512');
+                } else if (data.row == undefined) {
+                    $('#result').attr('width', '512');
+                    $('#result').attr('height', '256');
+                } else if (data.col == undefined) {
+                    $('#result').attr('width', '256');
+                    $('#result').attr('height', '512');
                 }
             });
         });
     </script>
 
+    <script>
+        $('#first_form').submit(function() {
+                    $('#generate').css('display', 'none');
+                    $('.wrapper').css('display', 'flex');
+                    });
+    </script>
 
     <script>
         function takeImg() {
@@ -110,8 +140,10 @@
             var imgInput = document.getElementById("image");
             if (checkBox.checked == true) {
                 imgInput.style.display = "none";
+                $('#strength').attr('disabled', 'disabled');
             } else {
                 imgInput.style.display = "flex";
+                $('#strength').removeAttr('disabled');
             }
         }
     </script>
